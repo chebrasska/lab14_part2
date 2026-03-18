@@ -11,6 +11,41 @@
     python3 02_echo_server.py
 
 Для проверки используйте клиент из 03_echo_client.py (в другом терминале).
+
+═══════════════════════════════════════════════════════════════════════
+СПРАВКА: Оригинальный код сервера из репозитория 4_asyncio_server
+═══════════════════════════════════════════════════════════════════════
+
+Оригинальный сервер (Python 3.6 стиль с устаревшим API):
+
+    import asyncio
+
+    async def handle_echo(reader, writer):
+        data = await reader.read(100)
+        message = data.decode()
+        writer.write(data)
+        await writer.drain()
+        writer.close()
+
+    loop = asyncio.get_event_loop()
+    coro = asyncio.start_server(handle_echo, 'localhost', 9095, loop=loop)
+    server = loop.run_until_complete(coro)
+
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        pass
+
+    server.close()
+    loop.run_until_complete(server.wait_closed())
+    loop.close()
+
+Что изменилось в нашей версии (Python 3.8+):
+  1. asyncio.run(main()) заменяет ручное создание event loop
+  2. async with server: заменяет ручное закрытие сервера
+  3. await writer.wait_closed() — корректное ожидание закрытия (Python 3.7+)
+  4. Параметр loop= убран — он deprecated с Python 3.8 и удалён в 3.10
+═══════════════════════════════════════════════════════════════════════
 """
 
 import asyncio

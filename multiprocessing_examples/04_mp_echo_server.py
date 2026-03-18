@@ -14,6 +14,52 @@
 Для проверки используйте клиент 05_mp_echo_client.py (в другом терминале).
 Откройте 2–3 терминала с клиентами одновременно и обратите внимание
 на PID каждого обработчика — они будут разными.
+
+═══════════════════════════════════════════════════════════════════════
+СПРАВКА: Оригинальный однопоточный сервер из репозитория 2_threaded_server
+https://github.com/fa-python-network/2_threaded_server
+═══════════════════════════════════════════════════════════════════════
+
+Оригинальный сервер (однопоточный, обслуживает только 1 клиента):
+
+    import socket
+
+    sock = socket.socket()
+    sock.bind(('', 9090))
+    sock.listen(0)
+    conn, addr = sock.accept()
+    print(addr)
+
+    msg = ''
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        msg += data.decode()
+        conn.send(data)
+
+    print(msg)
+    conn.close()
+
+Оригинальный клиент:
+
+    import socket
+
+    sock = socket.socket()
+    sock.connect(('localhost', 9090))
+    msg = "Hi!"
+    sock.send(msg.encode())
+    data = sock.recv(1024)
+    sock.close()
+    print(data.decode())
+
+В lab 2 студенты превращали этот сервер в многопоточный через threading.Thread.
+Здесь мы делаем аналогичное, но через multiprocessing.Process.
+
+Сравните подходы:
+  threading:       conn обрабатывается в Thread  → тот же PID, общая память
+  multiprocessing: conn обрабатывается в Process → новый PID, изоляция памяти
+═══════════════════════════════════════════════════════════════════════
 """
 
 import os

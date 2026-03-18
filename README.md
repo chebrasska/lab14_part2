@@ -92,8 +92,9 @@ cd ~
 rm -rf lab14_part2
 git clone https://github.com/Mohanad0101/lab14_part2.git lab14_part2
 cd lab14_part2
-ls -la
 ```
+
+> Команда `rm -rf lab14_part2` удаляет старую папку, если она существует. Если вы уже работали в ней — убедитесь, что сохранили свои изменения перед удалением.
 
 ### 2. Проверка версии Python
 
@@ -121,9 +122,13 @@ lab14_part2/
     └── 03_echo_client.py              # Эхо-клиент — TODO
 ```
 
-### 4. Как работать с TODO
+### 4. Как работать с файлами
 
-В файлах есть помеченные места вида:
+В файлах с заданиями вы найдёте:
+
+**Справка (СПРАВКА)** — в файлах, основанных на курсовых репозиториях ([3_Parallelism](https://github.com/fa-python-network/3_Parallelism), [4_asyncio_server](https://github.com/fa-python-network/4_asyncio_server), [2_threaded_server](https://github.com/fa-python-network/2_threaded_server)), в начале docstring приведён оригинальный код из этих репозиториев. Изучите его, чтобы понять, как работает исходный пример и что изменилось в нашей версии.
+
+**TODO** — помеченные места вида:
 
 ```python
 # TODO 1: Описание задания

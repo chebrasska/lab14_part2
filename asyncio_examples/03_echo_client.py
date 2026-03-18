@@ -10,6 +10,35 @@
 
 Запуск (сервер 02_echo_server.py должен быть запущен в другом терминале):
     python3 03_echo_client.py
+
+═══════════════════════════════════════════════════════════════════════
+СПРАВКА: Оригинальный код клиента из репозитория 4_asyncio_server
+═══════════════════════════════════════════════════════════════════════
+
+Оригинальный клиент (Python 3.6 стиль):
+
+    import asyncio
+
+    async def tcp_echo_client(host, port):
+        reader, writer = await asyncio.open_connection(host, port)
+        message = 'Hello, world'
+
+        writer.write(message.encode())
+        await writer.drain()
+
+        data = await reader.read(100)
+        writer.close()
+
+    loop = asyncio.get_event_loop()
+    task = loop.create_task(tcp_echo_client('localhost', 9095))
+    loop.run_until_complete(task)
+
+Что изменилось в нашей версии (Python 3.8+):
+  1. asyncio.run(main()) заменяет ручное создание event loop и task
+  2. await writer.wait_closed() — корректное ожидание закрытия
+  3. Добавлен asyncio.gather() для запуска нескольких клиентов (TODO 8)
+  4. Добавлена обработка ConnectionRefusedError
+═══════════════════════════════════════════════════════════════════════
 """
 
 import asyncio
