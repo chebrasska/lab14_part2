@@ -70,30 +70,38 @@ HOST = '127.0.0.1'
 PORT = 9096
 
 
-def handle_client(conn, addr):
-    """Обработка одного клиента в отдельном процессе."""
-
-    # TODO 9: Реализуйте обработку клиента:
-    #
-    # 1. Выведите PID текущего процесса:
-    #        print(f"[PID {os.getpid()}] Клиент {addr} подключён")
-    #
-    # 2. Прочитайте данные от клиента:
-    #        data = conn.recv(1024)
-    #
-    # 3. Выведите полученное сообщение:
-    #        print(f"[PID {os.getpid()}] Получено: '{data.decode()}'")
-    #
-    # 4. Отправьте данные обратно (эхо):
-    #        conn.sendall(data)
-    #
-    # 5. Закройте соединение:
-    #        conn.close()
-    #        print(f"[PID {os.getpid()}] Клиент {addr} отключён")
-
-    # --- Ваш код здесь ---
-    pass
-    # --- Конец вашего кода ---
+def handle_client(client_socket, address):
+    """
+    Обработчик клиента в отдельном процессе.
+    
+    TODO 9: Реализовать тело функции:
+        - принять данные от клиента
+        - вывести PID процесса и полученное сообщение
+        - отправить данные обратно
+        - закрыть соединение
+    """
+    pid = os.getpid()
+    print(f"[Процесс {pid}] Обработка клиента {address}")
+    
+    try:
+        while True:
+            # Принимаем данные
+            data = client_socket.recv(1024)
+            if not data:
+                break
+            
+            message = data.decode()
+            print(f"[Процесс {pid}] Получено от {address}: '{message}'")
+            
+            # Отправляем обратно (эхо)
+            client_socket.send(data)
+            print(f"[Процесс {pid}] Отправлено {address}: '{message}'")
+    
+    except Exception as e:
+        print(f"[Процесс {pid}] Ошибка: {e}")
+    finally:
+        client_socket.close()
+        print(f"[Процесс {pid}] Соединение с {address} закрыто")
 
 
 if __name__ == '__main__':

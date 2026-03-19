@@ -49,23 +49,25 @@ async def fetch_data_async(source, delay):
 
 
 async def main_async():
-    """Асинхронный запуск трёх «запросов» одновременно."""
+    """Асинхронное выполнение трёх запросов.
+    
+    TODO 5: Допишите асинхронную версию с использованием asyncio.gather()
+    """
+    print("АСИНХРОННО:")
+    
+    # Создаём корутины
+    tasks = [
+        fetch_data_async("API сервер", 2),
+        fetch_data_async("База данных", 3),
+        fetch_data_async("Файловое хранилище", 1)
+    ]
+    
+    # Запускаем все корутины одновременно и ждём их завершения
+    results = await asyncio.gather(*tasks)
+    
+    print(f"Результаты: {results}")
+    return results
 
-    # TODO 5: Используйте asyncio.gather() для одновременного запуска
-    # трёх вызовов fetch_data_async с теми же параметрами, что и в main_sync.
-    # Верните список результатов.
-    #
-    # Подсказка:
-    #   results = await asyncio.gather(
-    #       fetch_data_async("API сервер", 2),
-    #       fetch_data_async("База данных", 3),
-    #       fetch_data_async("Файловое хранилище", 1),
-    #   )
-    #   return results
-
-    # --- Ваш код здесь ---
-    pass
-    # --- Конец вашего кода ---
 
 
 if __name__ == '__main__':
